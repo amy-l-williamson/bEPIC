@@ -1,0 +1,3 @@
+eventid	version	event lat	event lon	depth	mag	time	latu	lonu	depu	magu	timeu	lk	nTb	nSb	nT	nS	ave	rms	fitOK	splitOK	near	statrig	active	inact	nsta	percent	prcntOK	mindist	maxdist	distOK	azspan	MOK	nSOK	LOK	Tdif	tpave	pdave	TF	TOK	AZOK	AOK	Ast	alert_time
+649	0	46.6569	-120.873	8.0	4.84	2018-10-31T17:25:30.38	0.184	0.184	5.0	0.5	4.48	0.89	3	3	3	3	0.0358	0.0015	1	1	0	0	0	85	85	0.0	1	116.27	155.4	1	79.9	1	0	1	2.21	-0.41	-2.67	0.0	1	1	0	0	2018-10-31T17:28:06.63
+649	1	46.729	-122.8933	8.0	3.83	2018-10-31T17:25:36.05	0.1283	0.1283	5.0	0.4	2.52	0.91	3	3	4	4	0.897	1.5234	1	1	0	0	0	88	88	0.0	1	70.11	129.72	1	79.9	1	1	1	0.0	0.0	0.0	0.0	1	1	1	1	2018-10-31T17:28:06.65
