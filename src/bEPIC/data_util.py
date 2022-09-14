@@ -134,7 +134,131 @@ def travel_time_function(velocity_model):
     return(ttf)   
 
 
+def parse_log(log_file,event_id,epic_id):
+    import os
+    import pandas as pd
 
+    
+    bepic=os.environ['BEPIC']
+    
+    
+    print('paring event long for epic event id '+epic_id)
+    ee=0
+    #-----------------------------------------------------------------------------#
+    file1 = open(log_file, 'r')
+    Lines = file1.readlines()
+
+
+    event_summary_df = pd.DataFrame(columns=['eventid','version','event lat','event lon','depth','mag','time','latu','lonu','depu',
+               'magu','timeu','lk','nTb','nSb','nT','nS','ave','rms','fitOK','splitOK','near',
+               'statrig','active','inact','nsta','percent','prcntOK','mindist','maxdist','distOK',
+               'azspan','MOK','nSOK','LOK','Tdif','tpave','pdave','TF','TOK','AZOK','AOK','Ast','alert_time'])
+
+
+    event_triggers_df = pd.DataFrame(columns=['eventid','version','update','order','sta','chan','net','loc','lat','lon','trigger time','rsmp','tsmp',
+               'log taup','taup snr','dsmp','log pd','pd snr','assoc','tpmag','utpm','pdmag','updm','uch','ukm','upd',
+               'ups','utp','uts','tel','tsec','distkm','azimuth','TF','tterr','azerror','incid','plen','sps'])
+
+
+
+    location_triggers_df = pd.DataFrame(columns=['eventid','version','nT','index',
+                                                 'sta','chan','net','loc','lat','lon','U','dist','tt','tterr'])
+
+
+    station_summary_df = pd.DataFrame(columns= ['eventid','version','event lat','event lon','time','mindist','maxdist','percent','near sta cnt','sta trig cnt',
+               'active','inactive','nsta'])
+
+
+    a_df = pd.DataFrame(columns=['eventid','version','event lat','event lon','depth','sta','chan','net','loc','lat','lon','date','tt',
+               'dist','ttok','dok','nttok','ndok','ttmin','ttmax','relo','nlat','nlon','ndep','ntime','nrms','nave',
+               'fitok','dmin','mdok','percent','pok'])
+   
+    station_counts_df = pd.DataFrame(columns=['eventid','version','sta','net','lat','lon','cluster','dist','tt','time','time check','active',
+             'trig','clu','ctrig'])
+
+    epic_location_df = pd.DataFrame(columns =['eventid','version','s','lat0','lon0','dep0','time0','lat','lon','depth','time','ddist','avefit','rmsfit','nT','nS'])
+
+
+    for k in range(len(Lines)):
+        l0 = list(filter(None, Lines[k].split('|')))[-1]
+        l = list(filter(None, l0.split(' ')))
+        #------------------------------------------------------------------------------------------------------------------------------------#
+        if ('E:I:' in l) or ('E:I:F:' in l):
+            # THIS IS THE EVENT INFORMATION
+            if l[1]==epic_id:
+                #print(l)
+                ee=1
+                
+                
+                event_summary_df.loc[len(event_summary_df)] =[int(l[1]),int(l[2]),float(l[3]),float(l[4]),
+                                                            float(l[5]) ,float(l[6]),l[7],float(l[8]),float(l[9]),float(l[10]),
+                                                            float(l[11]),float(l[12]),float(l[13]),int(l[14]),int(l[15]),int(l[16]),int(l[17]),
+                                                            float(l[18]) ,float(l[19]),int(l[20]),int(l[21]),int(l[22]),
+                                                            int(l[23]),int(l[24]),int(l[25]),int(l[26]),float(l[27]),
+                                                            int(l[28]),float(l[29]),float(l[30]),int(l[31]),float(l[32]),int(l[33]),
+                                                            int(l[34]),int(l[35]),float(l[36]),float(l[37]),float(l[38]),float(l[39]),
+                                                            int(l[40]),int(l[41]),int(l[42]),l[43],l[44].split('\n')[0]]
+        if ('E:I:T:' in l):
+            #--------------------- EVENT INFO TRIGGER ------------------------#
+            if l[1]==epic_id:
+                
+                event_triggers_df.loc[len(event_triggers_df)]=[l[1],int(l[2]),int(l[3]),int(l[4]),l[5],l[6],l[7],l[8],float(l[9]),float(l[10]),
+                                                            l[11],int(l[12]),int(l[13]),float(l[14]),float(l[15]),int(l[16]),float(l[17]),float(l[18]),
+                                                            l[19] ,float(l[20]),int(l[21]),float(l[22]),int(l[23]),int(l[24]),int(l[25]),
+                                                            int(l[26]),int(l[27]),int(l[28]),int(l[29]),int(l[30]),float(l[31]),float(l[32]),float(l[33]),int(l[34]),
+                                                            float(l[35]),float(l[36]),float(l[37]),int(l[38]),float(l[39])]
+        if 'L:T:' in l:
+            # THIS IS A LOCATION TRIGGER LINE
+            if l[1]==epic_id:
+                location_triggers_df.loc[len(location_triggers_df)]=[l[1],int(l[2]),int(l[3]),int(l[4]),l[5],l[6],l[7],l[8],float(l[9]),
+                                                                   float(l[10]),int(l[11]),float(l[12]),float(l[13]),float(l[14])]
+        if 'E:S:' in l:
+            #STATION COUNT SUMMARY
+            if l[1]==epic_id:
+                station_summary_df.loc[len(station_summary_df)]=[l[1],int(l[2]),float(l[3]),float(l[4]),l[5],float(l[6]),
+                                                                float(l[7]),float(l[8]),int(l[9]),int(l[10]),
+                                                                int(l[11]),int(l[12]),int(l[13])]
+        if "A:" in l:
+            if l[1]==epic_id:
+                a_df .loc[len(a_df)]=[l[1],int(l[2]),float(l[3]),float(l[4]),float(l[5]),l[6],l[7],l[8],l[9],
+                                    float(l[10]),float(l[11]),l[12],float(l[13]),float(l[14]),int(l[15]),
+                                    int(l[16]),int(l[17]),int(l[18]),float(l[19]),float(l[20]),
+                                    int(l[21]),float(l[22]),float(l[23]),float(l[24]),l[25],float(l[26]),float(l[27]),
+                                    int(l[28]),float(l[29]),int(l[30]),float(l[31]),int(l[32])]
+        if 'E:C:' in l:
+            #STATION COUNT DETAILS 
+            if l[1]==epic_id:
+                station_counts_df.loc[len(station_counts_df)]=[l[1],int(l[2]),l[3],l[4],float(l[5]),float(l[6]),
+                                                             l[7],float(l[8]),float(l[9]),l[10],
+                                                             float(l[11]),int(l[12]),int(l[13]),int(l[14]),int(l[15])]
+        if 'L:E:' in l:
+            # THIS IS A LOCATION ALGORITHM LINE
+            if l[1]==epic_id:
+                epic_location_df.loc[len(epic_location_df)]=[l[1],int(l[2]),int(l[3]),float(l[4]),float(l[5]),float(l[6]),l[7],float(l[8]),float(l[9]),
+                                                            float(l[10]),l[11],float(l[12]),float(l[13]),float(l[14]),int(l[15]),int(l[16])]
+                
+                
+        #------------------------------------------------------------------------------------------------------------------------------------#    
+
+
+
+    # need to save the dataframes
+    if ee ==1:
+        
+        
+        if os.path.exists(bepic+'/'+event_id+'/')==False:
+            os.mkdir(bepic+'/'+event_id+'/')
+            
+            
+        event_summary_df.to_csv(    bepic+'/'+event_id+'/'+event_id+'_event_summary_log.txt',sep='\t',index=False)
+        event_triggers_df.to_csv(   bepic+'/'+event_id+'/'+event_id+'_event_triggers_log.txt',sep='\t',index=False)
+        location_triggers_df.to_csv(bepic+'/'+event_id+'/'+event_id+'_location_triggers_log.txt',sep='\t',index=False)
+        station_summary_df.to_csv(  bepic+'/'+event_id+'/'+event_id+'_station_summary_log.txt',sep='\t',index=False)
+        a_df.to_csv(                bepic+'/'+event_id+'/'+event_id+'_misc_log.txt',sep='\t',index=False)
+        station_counts_df.to_csv(   bepic+'/'+event_id+'/'+event_id+'_station_counts_log.txt',sep='\t',index=False)
+        epic_location_df.to_csv(    bepic+'/'+event_id+'/'+event_id+'_epic_location_log.txt',sep='\t',index=False)
+        
+        
 
 
 
