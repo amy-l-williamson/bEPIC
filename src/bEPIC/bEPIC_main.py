@@ -86,7 +86,10 @@ def initialize_bEPIC_event(postgres_id):
         # if the USGS folder does not have an event log, attempt to find one
         if os.path.exists(bepic+'/event_logs/'+postgres_id+'/USGS/'+'usgs_event_summary.txt')==False:
             print(' ... no USGS event found ... attempting to find one')
-            data_util.search_for_USGS_event(postgres_id)
+            try:
+                data_util.search_for_USGS_event(postgres_id)
+            except:
+                print('failed')
 
 
 
