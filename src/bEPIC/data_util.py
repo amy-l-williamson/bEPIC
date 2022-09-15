@@ -246,17 +246,17 @@ def parse_log(log_file,event_id,epic_id):
     if ee ==1:
         
         
-        if os.path.exists(bepic+'/'+event_id+'/')==False:
-            os.mkdir(bepic+'/'+event_id+'/')
+        if os.path.exists(bepic+'/event_logs/'+event_id+'/')==False:
+            os.mkdir(bepic+'/event_logs/'+event_id+'/')
             
             
-        event_summary_df.to_csv(    bepic+'/'+event_id+'/'+event_id+'_event_summary_log.txt',sep='\t',index=False)
-        event_triggers_df.to_csv(   bepic+'/'+event_id+'/'+event_id+'_event_triggers_log.txt',sep='\t',index=False)
-        location_triggers_df.to_csv(bepic+'/'+event_id+'/'+event_id+'_location_triggers_log.txt',sep='\t',index=False)
-        station_summary_df.to_csv(  bepic+'/'+event_id+'/'+event_id+'_station_summary_log.txt',sep='\t',index=False)
-        a_df.to_csv(                bepic+'/'+event_id+'/'+event_id+'_misc_log.txt',sep='\t',index=False)
-        station_counts_df.to_csv(   bepic+'/'+event_id+'/'+event_id+'_station_counts_log.txt',sep='\t',index=False)
-        epic_location_df.to_csv(    bepic+'/'+event_id+'/'+event_id+'_epic_location_log.txt',sep='\t',index=False)
+        event_summary_df.to_csv(    bepic+'/event_logs/'+event_id+'/'+event_id+'_event_summary_log.txt',sep='\t',index=False)
+        event_triggers_df.to_csv(   bepic+'/event_logs/'+event_id+'/'+event_id+'_event_triggers_log.txt',sep='\t',index=False)
+        location_triggers_df.to_csv(bepic+'/event_logs/'+event_id+'/'+event_id+'_location_triggers_log.txt',sep='\t',index=False)
+        station_summary_df.to_csv(  bepic+'/event_logs/'+event_id+'/'+event_id+'_station_summary_log.txt',sep='\t',index=False)
+        a_df.to_csv(                bepic+'/event_logs/'+event_id+'/'+event_id+'_misc_log.txt',sep='\t',index=False)
+        station_counts_df.to_csv(   bepic+'/event_logs/'+event_id+'/'+event_id+'_station_counts_log.txt',sep='\t',index=False)
+        epic_location_df.to_csv(    bepic+'/event_logs/'+event_id+'/'+event_id+'_epic_location_log.txt',sep='\t',index=False)
         
         
 

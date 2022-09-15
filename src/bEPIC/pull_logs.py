@@ -33,7 +33,7 @@ log_location='/home/gcl/RA/williamson/EPIC_unprocessed_logs/'
 log_file = log_location+instance+'_'+day+'.log'
 event_id = str(postgres_id)
 
-if os.path.exists(bepic+'/'+event_id+'/'+event_id+'_event_summary_log.txt')==False:
+if os.path.exists(bepic+'/event_logs/'+event_id+'/'+event_id+'_event_summary_log.txt')==False:
     try:
         url='http://131.215.66.120/'+instance+'/epic/epic_'+day+'.log.gz'
         if os.path.exists(log_location+instance+'_'+day+'.log')==False:
