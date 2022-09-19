@@ -248,15 +248,16 @@ def parse_log(project_parent_directory,log_file,event_id,epic_id):
         
         if os.path.exists(project_parent_directory+event_id+'/')==False:
             os.mkdir(project_parent_directory+event_id+'/')
+            os.mkdir(project_parent_directory+event_id+'/EPIC/')
             
             
-        event_summary_df.to_csv(    project_parent_directory+event_id+'/'+event_id+'_event_summary_log.txt',sep='\t',index=False)
-        event_triggers_df.to_csv(   project_parent_directory+event_id+'/'+event_id+'_event_triggers_log.txt',sep='\t',index=False)
-        location_triggers_df.to_csv(project_parent_directory+event_id+'/'+event_id+'_location_triggers_log.txt',sep='\t',index=False)
-        station_summary_df.to_csv(  project_parent_directory+event_id+'/'+event_id+'_station_summary_log.txt',sep='\t',index=False)
-        a_df.to_csv(                project_parent_directory+event_id+'/'+event_id+'_misc_log.txt',sep='\t',index=False)
-        station_counts_df.to_csv(   project_parent_directory+event_id+'/'+event_id+'_station_counts_log.txt',sep='\t',index=False)
-        epic_location_df.to_csv(    project_parent_directory+event_id+'/'+event_id+'_epic_location_log.txt',sep='\t',index=False)
+        event_summary_df.to_csv(    project_parent_directory+event_id+'/EPIC/'+event_id+'_event_summary_log.txt',sep='\t',index=False)
+        event_triggers_df.to_csv(   project_parent_directory+event_id+'/EPIC/'+event_id+'_event_triggers_log.txt',sep='\t',index=False)
+        location_triggers_df.to_csv(project_parent_directory+event_id+'/EPIC/'+event_id+'_location_triggers_log.txt',sep='\t',index=False)
+        station_summary_df.to_csv(  project_parent_directory+event_id+'/EPIC/'+event_id+'_station_summary_log.txt',sep='\t',index=False)
+        a_df.to_csv(                project_parent_directory+event_id+'/EPIC/'+event_id+'_misc_log.txt',sep='\t',index=False)
+        station_counts_df.to_csv(   project_parent_directory+event_id+'/EPIC/'+event_id+'_station_counts_log.txt',sep='\t',index=False)
+        epic_location_df.to_csv(    project_parent_directory+event_id+'/EPIC/'+event_id+'_epic_location_log.txt',sep='\t',index=False)
         
         
 
