@@ -1,2 +1,0 @@
-eventid	version	event lat	event lon	depth	sta	chan	net	loc	lat	lon	date	tt	dist	ttok	dok	nttok	ndok	ttmin	ttmax	relo	nlat	nlon	ndep	ntime	nrms	nave	fitok	dmin	mdok	percent	pok
-649	1	46.6569	-120.873	8.0	OHC	ENZ	UW	--	47.3326	-123.1588	2018-10-31T17:25:47.730	17.35	188.93	1	1	0	0	13.62	49.12	1	46.729	-122.8933	8.0	2018-10-31T17:25:36.05	1.5234	0.897	1	70.06	1	0.0	1

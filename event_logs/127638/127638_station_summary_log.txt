@@ -1,3 +1,0 @@
-eventid	version	event lat	event lon	time	mindist	maxdist	percent	near sta cnt	sta trig cnt	active	inactive	nsta
-649	0	46.6569	-120.873	2018-10-31T17:25:30.377	115.94	155.15	0.0	0	0	0	85	85
-649	1	46.729	-122.8933	2018-10-31T17:25:36.055	70.06	129.57	0.0	0	0	0	88	88
