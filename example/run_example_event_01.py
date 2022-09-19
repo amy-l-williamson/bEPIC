@@ -13,6 +13,8 @@ init=0
 run=1
 #--------------------------------------#
 # run variables
+project_parent_directory = '/Users/amy/projects/bEPIC_event_files/'
+
 
 velocity_model = 'h2p+ak135'   # 'constant
 GridSize=200
@@ -20,8 +22,9 @@ GridSpacing=2
 
 
 if init ==1:
-    bEPIC_main.initialize_bEPIC_event(postgres_id)
+    bEPIC_main.initialize_bEPIC_event(project_parent_directory,postgres_id)
     
 if run ==1:
-    bEPIC_main.run_bEPIC(postgres_id,velocity_model,GridSize,GridSpacing)
+    bEPIC_main.run_bEPIC(project_parent_directory,postgres_id,velocity_model,GridSize,GridSpacing)
 
+a=1
