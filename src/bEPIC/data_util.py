@@ -7,7 +7,7 @@ Created on Wed Sep 14 11:18:41 2022
 """
 
        
-def generate_run_file(postgres_id):
+def generate_run_file(project_parent_directory,postgres_id):
     import numpy as np
     import pandas as pd
     from datetime import datetime
@@ -17,8 +17,8 @@ def generate_run_file(postgres_id):
     bepic=os.environ['BEPIC']
 
 
-    station_trigger_log_file = bepic+'/event_logs/'+postgres_id+'/EPIC/'+postgres_id+'_event_triggers_log.txt'
-    output_filename =  bepic+'/event_logs/'+postgres_id+'/'+postgres_id+'.run'
+    station_trigger_log_file = project_parent_directory+postgres_id+'/EPIC/'+postgres_id+'_event_triggers_log.txt'
+    output_filename =  project_parent_directory+postgres_id+'/'+postgres_id+'.run'
     
     
     #-----------------------------------------------------------------------------#
@@ -62,7 +62,7 @@ def generate_run_file(postgres_id):
     df.to_csv(output_filename,index=False)
     #--------------------------------------------------#    
     
-def search_for_USGS_event(postgres_id):
+def search_for_USGS_event(project_parent_directory,postgres_id):
     import pandas as pd        
     import numpy as np
     from datetime import datetime,timedelta
@@ -73,7 +73,7 @@ def search_for_USGS_event(postgres_id):
     
     bepic=os.environ['BEPIC']
     
-    event_summary_df = pd.read_csv(bepic+'/event_logs/'+postgres_id+'/EPIC/'+postgres_id+'_event_summary_log.txt',sep='\t')
+    event_summary_df = pd.read_csv(project_parent_directory+postgres_id+'/EPIC/'+postgres_id+'_event_summary_log.txt',sep='\t')
     EPIC_ot = datetime.strptime(event_summary_df['time'].iloc[-1], '%Y-%m-%dT%H:%M:%S.%f')
     dt=0
     dx=0
@@ -113,7 +113,7 @@ def search_for_USGS_event(postgres_id):
                                                     'USGS lat':np.nan,'USGS lon':np.nan,
                                                     'USGS depth':np.nan,'USGS mag':np.nan},index=[0])
     
-    catalog_df.to_csv(bepic+'/event_logs/'+postgres_id+'/USGS/'+'usgs_event_summary.txt',sep='\t',index=False)
+    catalog_df.to_csv(project_parent_directory+postgres_id+'/USGS/'+'usgs_event_summary.txt',sep='\t',index=False)
 
 
 
@@ -134,7 +134,7 @@ def travel_time_function(velocity_model):
     return(ttf)   
 
 
-def parse_log(log_file,event_id,epic_id):
+def parse_log(project_parent_directory,log_file,event_id,epic_id):
     import os
     import pandas as pd
 
@@ -246,17 +246,17 @@ def parse_log(log_file,event_id,epic_id):
     if ee ==1:
         
         
-        if os.path.exists(bepic+'/event_logs/'+event_id+'/')==False:
-            os.mkdir(bepic+'/event_logs/'+event_id+'/')
+        if os.path.exists(project_parent_directory+event_id+'/')==False:
+            os.mkdir(project_parent_directory+event_id+'/')
             
             
-        event_summary_df.to_csv(    bepic+'/event_logs/'+event_id+'/'+event_id+'_event_summary_log.txt',sep='\t',index=False)
-        event_triggers_df.to_csv(   bepic+'/event_logs/'+event_id+'/'+event_id+'_event_triggers_log.txt',sep='\t',index=False)
-        location_triggers_df.to_csv(bepic+'/event_logs/'+event_id+'/'+event_id+'_location_triggers_log.txt',sep='\t',index=False)
-        station_summary_df.to_csv(  bepic+'/event_logs/'+event_id+'/'+event_id+'_station_summary_log.txt',sep='\t',index=False)
-        a_df.to_csv(                bepic+'/event_logs/'+event_id+'/'+event_id+'_misc_log.txt',sep='\t',index=False)
-        station_counts_df.to_csv(   bepic+'/event_logs/'+event_id+'/'+event_id+'_station_counts_log.txt',sep='\t',index=False)
-        epic_location_df.to_csv(    bepic+'/event_logs/'+event_id+'/'+event_id+'_epic_location_log.txt',sep='\t',index=False)
+        event_summary_df.to_csv(    project_parent_directory+event_id+'/'+event_id+'_event_summary_log.txt',sep='\t',index=False)
+        event_triggers_df.to_csv(   project_parent_directory+event_id+'/'+event_id+'_event_triggers_log.txt',sep='\t',index=False)
+        location_triggers_df.to_csv(project_parent_directory+event_id+'/'+event_id+'_location_triggers_log.txt',sep='\t',index=False)
+        station_summary_df.to_csv(  project_parent_directory+event_id+'/'+event_id+'_station_summary_log.txt',sep='\t',index=False)
+        a_df.to_csv(                project_parent_directory+event_id+'/'+event_id+'_misc_log.txt',sep='\t',index=False)
+        station_counts_df.to_csv(   project_parent_directory+event_id+'/'+event_id+'_station_counts_log.txt',sep='\t',index=False)
+        epic_location_df.to_csv(    project_parent_directory+event_id+'/'+event_id+'_epic_location_log.txt',sep='\t',index=False)
         
         
 

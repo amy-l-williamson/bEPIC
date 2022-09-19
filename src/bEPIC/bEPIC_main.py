@@ -11,7 +11,7 @@ Created on Wed Sep 14 10:15:50 2022
 
 
  
-def initialize_bEPIC_event(postgres_id):
+def initialize_bEPIC_event(project_parent_directory,postgres_id):
     from bEPIC import data_util
     import os
     import shutil
@@ -22,23 +22,23 @@ def initialize_bEPIC_event(postgres_id):
         
         
     # look to see if directory does in fact exist
-    if os.path.exists(bepic+'/event_logs/'+postgres_id)==False:
+    if os.path.exists(project_parent_directory+postgres_id)==False:
         print('directory does note exists')
         
     else:
         # if it does exist, check and add the right subfolders
-        if os.path.exists(bepic+'/event_logs/'+postgres_id+'/EPIC/')==False:
+        if os.path.exists(project_parent_directory+postgres_id+'/EPIC/')==False:
             print(' ... making an EPIC output directory')
-            os.mkdir(bepic+'/event_logs/'+postgres_id+'/EPIC/')
-        if os.path.exists(bepic+'/event_logs/'+postgres_id+'/plots/')==False:
+            os.mkdir(project_parent_directory+postgres_id+'/EPIC/')
+        if os.path.exists(project_parent_directory+postgres_id+'/plots/')==False:
             print(' ... making a plots output directory')
-            os.mkdir(bepic+'/event_logs/'+postgres_id+'/plots/')
-        if os.path.exists(bepic+'/event_logs/'+postgres_id+'/bEPIC/')==False:
+            os.mkdir(project_parent_directory+postgres_id+'/plots/')
+        if os.path.exists(project_parent_directory+postgres_id+'/bEPIC/')==False:
             print(' ... making a bEPIC output directory')
-            os.mkdir(bepic+'/event_logs/'+postgres_id+'/bEPIC/')
-        if os.path.exists(bepic+'/event_logs/'+postgres_id+'/USGS/')==False:
+            os.mkdir(project_parent_directory+postgres_id+'/bEPIC/')
+        if os.path.exists(project_parent_directory+postgres_id+'/USGS/')==False:
             print(' ... making a USGS output directory')
-            os.mkdir(bepic+'/event_logs/'+postgres_id+'/USGS/')
+            os.mkdir(project_parent_directory+postgres_id+'/USGS/')
             
         # move files to approriate folders
         location_log_file          = postgres_id+'_epic_location_log.txt'
@@ -49,51 +49,51 @@ def initialize_bEPIC_event(postgres_id):
         location_triggers_log_file = postgres_id+'_location_triggers_log.txt'
         misc_log_file              = postgres_id+'_misc_log.txt'
         
-        if os.path.exists(bepic+'/event_logs/'+postgres_id+'/'+location_log_file)==True:
-            shutil.move(bepic+'/event_logs/'+postgres_id+'/'+location_log_file, 
-                        bepic+'/event_logs/'+postgres_id+'/EPIC/'+location_log_file)
+        if os.path.exists(project_parent_directory+postgres_id+'/'+location_log_file)==True:
+            shutil.move(project_parent_directory+postgres_id+'/'+location_log_file, 
+                        project_parent_directory+postgres_id+'/EPIC/'+location_log_file)
             
-        if os.path.exists(bepic+'/event_logs/'+postgres_id+'/'+event_summary_log_file)==True:
-            shutil.move(bepic+'/event_logs/'+postgres_id+'/'+event_summary_log_file, 
-                        bepic+'/event_logs/'+postgres_id+'/EPIC/'+event_summary_log_file)
+        if os.path.exists(project_parent_directory+postgres_id+'/'+event_summary_log_file)==True:
+            shutil.move(project_parent_directory+postgres_id+'/'+event_summary_log_file, 
+                        project_parent_directory+postgres_id+'/EPIC/'+event_summary_log_file)
         
-        if os.path.exists(bepic+'/event_logs/'+postgres_id+'/'+station_summary_log_file)==True:
-            shutil.move(bepic+'/event_logs/'+postgres_id+'/'+station_summary_log_file, 
-                        bepic+'/event_logs/'+postgres_id+'/EPIC/'+station_summary_log_file)
+        if os.path.exists(project_parent_directory+postgres_id+'/'+station_summary_log_file)==True:
+            shutil.move(project_parent_directory+postgres_id+'/'+station_summary_log_file, 
+                        project_parent_directory+postgres_id+'/EPIC/'+station_summary_log_file)
         
-        if os.path.exists(bepic+'/event_logs/'+postgres_id+'/'+station_counts_log_file)==True:
-            shutil.move(bepic+'/event_logs/'+postgres_id+'/'+station_counts_log_file, 
-                        bepic+'/event_logs/'+postgres_id+'/EPIC/'+station_counts_log_file)
+        if os.path.exists(project_parent_directory+postgres_id+'/'+station_counts_log_file)==True:
+            shutil.move(project_parent_directory+postgres_id+'/'+station_counts_log_file, 
+                        project_parent_directory+postgres_id+'/EPIC/'+station_counts_log_file)
         
-        if os.path.exists(bepic+'/event_logs/'+postgres_id+'/'+event_triggers_log_file)==True:
-            shutil.move(bepic+'/event_logs/'+postgres_id+'/'+event_triggers_log_file, 
-                        bepic+'/event_logs/'+postgres_id+'/EPIC/'+event_triggers_log_file)
+        if os.path.exists(project_parent_directory+postgres_id+'/'+event_triggers_log_file)==True:
+            shutil.move(project_parent_directory+postgres_id+'/'+event_triggers_log_file, 
+                        project_parent_directory+postgres_id+'/EPIC/'+event_triggers_log_file)
             
-        if os.path.exists(bepic+'/event_logs/'+postgres_id+'/'+location_triggers_log_file)==True:
-            shutil.move(bepic+'/event_logs/'+postgres_id+'/'+location_triggers_log_file, 
-                        bepic+'/event_logs/'+postgres_id+'/EPIC/'+location_triggers_log_file)
+        if os.path.exists(project_parent_directory+postgres_id+'/'+location_triggers_log_file)==True:
+            shutil.move(project_parent_directory+postgres_id+'/'+location_triggers_log_file, 
+                        project_parent_directory+postgres_id+'/EPIC/'+location_triggers_log_file)
         
-        if os.path.exists(bepic+'/event_logs/'+postgres_id+'/'+misc_log_file)==True:
-            shutil.move(bepic+'/event_logs/'+postgres_id+'/'+misc_log_file, 
-                        bepic+'/event_logs/'+postgres_id+'/EPIC/'+misc_log_file)
+        if os.path.exists(project_parent_directory+postgres_id+'/'+misc_log_file)==True:
+            shutil.move(project_parent_directory+postgres_id+'/'+misc_log_file, 
+                        project_parent_directory+postgres_id+'/EPIC/'+misc_log_file)
         
         #  generate a .run file if none exists
-        if os.path.exists(bepic+'/event_logs/'+postgres_id+'/'+postgres_id+'.run')==False:
+        if os.path.exists(project_parent_directory+postgres_id+'/'+postgres_id+'.run')==False:
             print(' ... event needs a .run file')
             print(' ... creating a .run file for event id '+postgres_id)
-            data_util.generate_run_file(postgres_id)
+            data_util.generate_run_file(project_parent_directory,postgres_id)
         
         # if the USGS folder does not have an event log, attempt to find one
-        if os.path.exists(bepic+'/event_logs/'+postgres_id+'/USGS/'+'usgs_event_summary.txt')==False:
+        if os.path.exists(project_parent_directory+postgres_id+'/USGS/'+'usgs_event_summary.txt')==False:
             print(' ... no USGS event found ... attempting to find one')
             try:
-                data_util.search_for_USGS_event(postgres_id)
+                data_util.search_for_USGS_event(project_parent_directory,postgres_id)
             except:
                 print('failed')
 
 
 
-def run_bEPIC(postgres_id,velocity_model,GridSize,GridSpacing):
+def run_bEPIC(project_parent_directory,postgres_id,velocity_model,GridSize,GridSpacing):
         
     #----------------------------------------------------------------------------#    
     from bEPIC import locate,likelihood,magnitude,prior,posterior
@@ -105,7 +105,7 @@ def run_bEPIC(postgres_id,velocity_model,GridSize,GridSpacing):
     if type(postgres_id) != str:
         postgres_id = str(postgres_id).zfill(6)
           
-    run_df = pd.read_csv(bepic+'/event_logs/'+postgres_id+'/'+postgres_id+'.run')   # read the .run file
+    run_df = pd.read_csv(project_parent_directory+postgres_id+'/'+postgres_id+'.run')   # read the .run file
     run_df['sigma']=np.ones(len(run_df))
     #-----------------------------------------------------------------#
     version = 0
@@ -168,6 +168,6 @@ def run_bEPIC(postgres_id,velocity_model,GridSize,GridSpacing):
         #------------------------------------------------------------------------#
         version += 1
     
-    bEPIC_df.to_csv(bepic+'/event_logs/'+postgres_id+'/bEPIC/'+postgres_id+'_bEPIC_log.txt',sep='\t',index=False)
+    bEPIC_df.to_csv(project_parent_directory+postgres_id+'/bEPIC/'+postgres_id+'_bEPIC_log.txt',sep='\t',index=False)
 
 

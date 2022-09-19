@@ -28,12 +28,12 @@ epic_id = sys.argv[4]
 #-------------------------------------------------------------#
 instance = instance.replace(" ", "").split('@')[-1]
 
-
+project_parent_directory='/home/gcl/RA/williamson/bEPIC_events/'
 log_location='/home/gcl/RA/williamson/EPIC_unprocessed_logs/'
 log_file = log_location+instance+'_'+day+'.log'
 event_id = str(postgres_id)
 
-if os.path.exists(bepic+'/event_logs/'+event_id+'/'+event_id+'_event_summary_log.txt')==False:
+if os.path.exists(project_parent_directory+event_id+'/'+event_id+'_event_summary_log.txt')==False:
     try:
         url='http://131.215.66.120/'+instance+'/epic/epic_'+day+'.log.gz'
         if os.path.exists(log_location+instance+'_'+day+'.log')==False:
@@ -46,7 +46,7 @@ if os.path.exists(bepic+'/event_logs/'+event_id+'/'+event_id+'_event_summary_log
             print(' ... log file '+instance+'_'+day+'.log alread exsists')
         try:
             print(' ... parsing log file ...')
-            data_util.parse_log(log_file,event_id,epic_id)
+            data_util.parse_log(project_parent_directory,log_file,event_id,epic_id)
             #os.remove(log_file)
             os.remove(log_file+'.gz')
         except:
