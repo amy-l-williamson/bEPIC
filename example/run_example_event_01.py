@@ -27,4 +27,3 @@ if init ==1:
 if run ==1:
     bEPIC_main.run_bEPIC(project_parent_directory,postgres_id,velocity_model,GridSize,GridSpacing)
 
-a=1

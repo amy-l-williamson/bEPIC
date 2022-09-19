@@ -11,11 +11,6 @@ def generate_run_file(project_parent_directory,postgres_id):
     import numpy as np
     import pandas as pd
     from datetime import datetime
-    import os
-    
-    
-    bepic=os.environ['BEPIC']
-
 
     station_trigger_log_file = project_parent_directory+postgres_id+'/EPIC/'+postgres_id+'_event_triggers_log.txt'
     output_filename =  project_parent_directory+postgres_id+'/'+postgres_id+'.run'
@@ -67,37 +62,48 @@ def search_for_USGS_event(project_parent_directory,postgres_id):
     import numpy as np
     from datetime import datetime,timedelta
     from obspy.geodetics import gps2dist_azimuth
-    from libcomcat.search import search
-    import os
+   
     
-    
-    bepic=os.environ['BEPIC']
     
     event_summary_df = pd.read_csv(project_parent_directory+postgres_id+'/EPIC/'+postgres_id+'_event_summary_log.txt',sep='\t')
     EPIC_ot = datetime.strptime(event_summary_df['time'].iloc[-1], '%Y-%m-%dT%H:%M:%S.%f')
     dt=0
     dx=0
     found=False
+
+
+
     
     while found == False:
-            # run the search
-            km_radius_events = search(starttime=EPIC_ot-timedelta(seconds=dt), endtime=EPIC_ot+timedelta(seconds=dt),
-                               maxradiuskm=dx, latitude=event_summary_df['event lat'].iloc[-1],
-                               longitude=event_summary_df['event lon'].iloc[-1])
-    
-    
-            if len(km_radius_events)==1:
-    
+            starttime = (EPIC_ot-timedelta(seconds=dt))
+            endtime   = (EPIC_ot+timedelta(seconds=dt))
+            maxradiuskm=dx
+            latitude=event_summary_df['event lat'].iloc[-1]
+            longitude=event_summary_df['event lon'].iloc[-1]
+            jdict = search_comcat(starttime,endtime,maxradiuskm,latitude,longitude)
+            
+            if len(jdict["features"]) ==1:
+            
                 print('found event with dx: ',dx,' and dt: ',dt)
-                USGS_event = km_radius_events[0]
-                m,az1,az2 = gps2dist_azimuth(USGS_event.latitude, USGS_event.longitude, event_summary_df['event lat'].iloc[-1], event_summary_df['event lon'].iloc[-1])
+                USGS_event_id =jdict["features"][0]['id']
+                USGS_event_latitude=jdict["features"][0]['geometry']['coordinates'][1]
+                USGS_event_longitude=jdict["features"][0]['geometry']['coordinates'][0]
+                USGS_event_depth = jdict["features"][0]['geometry']['coordinates'][2]
+                USGS_event_magnitude = jdict["features"][0]['properties']['mag']
+                USGS_event_time=jdict["features"][0]['properties']['time']
                 
-                catalog_df = pd.DataFrame({'postgres id':postgres_id,'USGS ID':USGS_event.id,'USGS time':USGS_event.time.timestamp(),
-                                                'USGS lat':USGS_event.latitude,'USGS lon':USGS_event.longitude,
-                                                'USGS depth':USGS_event.depth,'USGS mag':USGS_event.magnitude},index=[0])   
+                m,az1,az2 = gps2dist_azimuth(USGS_event_latitude, USGS_event_longitude, event_summary_df['event lat'].iloc[-1], event_summary_df['event lon'].iloc[-1])
+                
+                
+                
+                catalog_df = pd.DataFrame({'postgres id':postgres_id,'USGS ID':USGS_event_id,'USGS time':USGS_event_time,
+                                                'USGS lat':USGS_event_latitude,'USGS lon':USGS_event_longitude,
+                                                'USGS depth':USGS_event_depth,'USGS mag':USGS_event_magnitude},index=[0])   
+                
+                
+                
                 found = True
-    
-            elif len(km_radius_events)>1:
+            elif len(jdict["features"])>1:
                 # multiple events found
                 dt=dt-1
                 dx=dx-1
@@ -262,4 +268,32 @@ def parse_log(project_parent_directory,log_file,event_id,epic_id):
         
 
 
+
+def search_comcat(starttime,endtime,maxradiuskm,latitude,longitude):
+    import requests
+    from urllib.parse import urlencode
+    ##############################################################################
+    TIMEFMT = "%Y-%m-%dT%H:%M:%S"
+    SEARCH_TEMPLATE = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson"
+    libversion ='2.0.13'
+    HEADERS = {"User-Agent": "libcomcat v%s" % libversion}
+    TIMEOUT = 60
+    
+    
+    template = SEARCH_TEMPLATE
+    newargs = {}
+    newargs['starttime']     = starttime.strftime(TIMEFMT)
+    newargs['endtime']       = endtime.strftime(TIMEFMT)
+    newargs['maxradiuskm']   = maxradiuskm
+    newargs['longitude']     = longitude
+    newargs['latitude']      = latitude
+    newargs["limit"] = 20000
+    
+    paramstr = urlencode(newargs)
+    url = template + "&" + paramstr
+    
+    response = requests.get(url, timeout=TIMEOUT, headers=HEADERS)
+    jdict = response.json()
+    ##############################################################################
+    return(jdict)
 
