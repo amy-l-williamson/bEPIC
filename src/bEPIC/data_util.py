@@ -297,3 +297,45 @@ def search_comcat(starttime,endtime,maxradiuskm,latitude,longitude):
     ##############################################################################
     return(jdict)
 
+
+def search_comcat_by_eventid(project_parent_directory,postgres_id,eventid):
+
+    
+    import requests
+    from urllib.parse import urlencode
+    import pandas as pd
+    ##############################################################################
+    
+    SEARCH_TEMPLATE = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson"
+    libversion ='2.0.13'
+    HEADERS = {"User-Agent": "libcomcat v%s" % libversion}
+    TIMEOUT = 60
+    
+    
+    template = SEARCH_TEMPLATE
+    newargs = {}
+    newargs['eventid']=eventid
+    paramstr = urlencode(newargs)
+    url = template + "&" + paramstr
+    
+    response = requests.get(url, timeout=TIMEOUT, headers=HEADERS)
+    jdict = response.json()
+    
+    
+    USGS_event_id=eventid
+    USGS_event_latitude=jdict['geometry']['coordinates'][1]
+    USGS_event_longitude=jdict['geometry']['coordinates'][0]
+    USGS_event_depth = jdict['geometry']['coordinates'][2]
+    USGS_event_magnitude =jdict['properties']['mag']
+    USGS_event_time=jdict['properties']['time']
+    
+    
+    catalog_df = pd.DataFrame({'postgres id':postgres_id,'USGS ID':USGS_event_id,'USGS time':USGS_event_time,
+                                    'USGS lat':USGS_event_latitude,'USGS lon':USGS_event_longitude,
+                                    'USGS depth':USGS_event_depth,'USGS mag':USGS_event_magnitude},index=[0])   
+    
+    catalog_df.to_csv(project_parent_directory+postgres_id+'/USGS/'+'usgs_event_summary.txt',sep='\t',index=False)
+    
+    
+    return(catalog_df)
+
