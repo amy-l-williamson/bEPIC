@@ -300,7 +300,7 @@ def search_comcat(starttime,endtime,maxradiuskm,latitude,longitude):
 
 def search_comcat_by_eventid(project_parent_directory,postgres_id,eventid):
 
-    
+    from datetime import datetime,timedelta
     import requests
     from urllib.parse import urlencode
     import pandas as pd
@@ -327,7 +327,15 @@ def search_comcat_by_eventid(project_parent_directory,postgres_id,eventid):
     USGS_event_longitude=jdict['geometry']['coordinates'][0]
     USGS_event_depth = jdict['geometry']['coordinates'][2]
     USGS_event_magnitude =jdict['properties']['mag']
-    USGS_event_time=jdict['properties']['time']
+    time_in_msec = jdict['properties']['time']
+    time_in_sec = time_in_msec // 1000
+    msec = time_in_msec - (time_in_sec * 1000)
+    dtime = datetime(1970, 1, 1) + timedelta(seconds=time_in_sec)
+    dt = timedelta(milliseconds=msec)
+    dtime = dtime + dt
+
+
+    USGS_event_time=dtime.timestamp()
     
     
     catalog_df = pd.DataFrame({'postgres id':postgres_id,'USGS ID':USGS_event_id,'USGS time':USGS_event_time,

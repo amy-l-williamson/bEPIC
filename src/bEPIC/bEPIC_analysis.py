@@ -46,7 +46,9 @@ def compute_station_trigger_misfit(postgres_id,project_parent_directory):
         
         
         
-            misift_df = pd.DataFrame({'SNC':run_df['station']+'.'+run_df['network']+'.'+run_df['channel'],
+            misift_df = pd.DataFrame({'station':run_df['station'],
+                                      'network':run_df['network'],
+                                      'channel':run_df['channel'],
                                       'station lon':run_df['longitude'],
                                       'station lat':run_df['latitude'],
                                       'trigger offset':time_offset,
